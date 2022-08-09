@@ -1,6 +1,7 @@
-import {useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 
 import api from "./api";
+import Header from "./components/Header";
 
 const App = () => {
   const imagenPokemon = useRef(null);
@@ -12,10 +13,17 @@ const App = () => {
   const [pokemon, setPokemon] = useState("");
   const [guess, setGuess] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [intentosCount, setIntentosCount] = useState(localStorage.getItem("intentosCount") || 0);
+  const [btnDisabled, setBtnDisabled] = useState(false);
+  const [intentosCount, setIntentosCount] = useState(
+    localStorage.getItem("intentosCount") || 0
+  );
   const [laRespuesta, setLaRespuesta] = useState("");
-  const [sucessCount, setSucessCount] = useState(localStorage.getItem("sucessCount") || 0);
-  const [errorCount, setErrorCount] = useState(localStorage.getItem("errorCount") || 0);
+  const [sucessCount, setSucessCount] = useState(
+    localStorage.getItem("sucessCount") || 0
+  );
+  const [errorCount, setErrorCount] = useState(
+    localStorage.getItem("errorCount") || 0
+  );
 
   useEffect(() => {
     return localStorage.setItem("sucessCount", sucessCount.toString());
@@ -46,6 +54,7 @@ const App = () => {
       setGuess(false);
       setPokemon("");
       api.random().then(setRandomPokemon);
+      setBtnDisabled(false);
     }, time);
   };
 
@@ -67,6 +76,7 @@ const App = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setBtnDisabled(true);
     // Pasamos toda la cadena a minuscula para no preocuparnos por las mayusculas
     let pokemonLowCase = pokemon.toLowerCase();
     // Reemplazamos los puntos y espacios por "" para que la cadena quede sin esto.
@@ -88,27 +98,19 @@ const App = () => {
 
   return (
     <div className="app">
-      <header>
-        <a
-          href="https://github.com/hctmanuelortiz/guess-pokemon"
-          rel="noreferrer"
-          target={"_blank"}
-        >
-          <i className="nes-icon github is-medium" />
-        </a>
-        <a href="https://github.com/goncy/interview-challenges" rel="noreferrer" target={"_blank"}>
-          <p> Challenge by Goncy </p>
-        </a>
-        <a href="https://twitter.com/hctmanuelortiz" rel="noreferrer" target={"_blank"}>
-          <i className="nes-icon twitter is-medium" />
-        </a>
-      </header>
+      <Header />
       <main>
         <h1 className="title-section">Quien es este Pokemon?</h1>
 
         <div className="nes-container is-rounded is-dark count-section">
-          <h3 className="nes-text is-disabled intentos"> Intentos: {intentosCount} </h3>
-          <h3 className="nes-text is-success aciertos"> aciertos: {sucessCount} </h3>
+          <h3 className="nes-text is-disabled intentos">
+            {" "}
+            Intentos: {intentosCount}{" "}
+          </h3>
+          <h3 className="nes-text is-success aciertos">
+            {" "}
+            aciertos: {sucessCount}{" "}
+          </h3>
           <h3 className="nes-text is-error errores"> errores: {errorCount} </h3>
         </div>
         <section className="pokemon-section">
@@ -141,6 +143,7 @@ const App = () => {
             />
             <input
               className="nes-btn is-primary nes-pointer btn-guess"
+              disabled={btnDisabled}
               type="submit"
               value="adivinar"
             />
