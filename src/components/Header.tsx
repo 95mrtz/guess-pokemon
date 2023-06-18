@@ -2,7 +2,7 @@ const Header = (): JSX.Element => {
   return (
     <header>
       <a
-        href="https://github.com/hctmanuelortiz/guess-pokemon"
+        href="https://github.com/95mrtz/guess-pokemon"
         rel="noreferrer"
         target={"_blank"}
       >
@@ -16,7 +16,7 @@ const Header = (): JSX.Element => {
         <p>Challenge by Goncy </p>
       </a>
       <a
-        href="https://twitter.com/hctmanuelortiz"
+        href="https://twitter.com/95mrtz"
         rel="noreferrer"
         target={"_blank"}
       >
